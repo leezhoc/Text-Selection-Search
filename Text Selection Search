@@ -25,7 +25,7 @@
     menuContainer.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
     menuContainer.style.zIndex = '9999';
     menuContainer.style.transition = 'width 0.3s, opacity 0.3s';
-    menuContainer.style.width = '10px'; // 初始宽度，只显示边缘
+    menuContainer.style.width = '100px'; // 初始宽度，只显示边缘
     menuContainer.style.opacity = '0'; // 初始透明
 
     // 当鼠标悬停时展开菜单并显示文本
