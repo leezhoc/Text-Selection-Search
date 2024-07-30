@@ -1,0 +1,81 @@
+// ==UserScript==
+// @name         Text Selection Search
+// @namespace    http://tampermonkey.net/
+// @version      1.0
+// @description  Search selected text using various search engines.
+// @author       You
+// @match        *://*/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    let selectedText = '';
+
+    // 创建菜单容器
+    const menuContainer = document.createElement('div');
+    menuContainer.id = 'search-menu-container';
+    menuContainer.style.position = 'fixed';
+    menuContainer.style.left = '0';
+    menuContainer.style.top = '50%';
+    menuContainer.style.transform = 'translateY(-50%)';
+    menuContainer.style.backgroundColor = '#fff';
+    menuContainer.style.border = '1px solid #ccc';
+    menuContainer.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+    menuContainer.style.zIndex = '9999';
+    menuContainer.style.transition = 'width 0.3s, opacity 0.3s';
+    menuContainer.style.width = '10px'; // 初始宽度，只显示边缘
+    menuContainer.style.opacity = '0'; // 初始透明
+
+    // 当鼠标悬停时展开菜单并显示文本
+    menuContainer.addEventListener('mouseover', () => {
+        menuContainer.style.width = '150px'; // 展开的宽度
+        menuContainer.style.opacity = '1'; // 显示文本
+    });
+
+    // 当鼠标移出时收缩菜单并隐藏文本
+    menuContainer.addEventListener('mouseout', () => {
+        menuContainer.style.width = '10px'; // 收缩的宽度
+        menuContainer.style.opacity = '0'; // 隐藏文本
+    });
+
+    // 创建按钮容器
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.padding = '10px';
+
+    // 创建搜索按钮
+    const searchButtons = [
+        { name: '百度', url: 'https://www.baidu.com/s?wd=' },
+        { name: 'YouTube', url: 'https://www.youtube.com/results?search_query=' },
+        { name: '知乎', url: 'https://www.zhihu.com/search?q=' },
+        { name: 'Bing', url: 'https://www.bing.com/search?q=' }
+    ];
+
+    searchButtons.forEach(button => {
+        const searchButton = document.createElement('button');
+        searchButton.textContent = button.name;
+        searchButton.style.display = 'block';
+        searchButton.style.margin = '5px';
+        searchButton.style.width = '100%';
+        searchButton.addEventListener('click', () => {
+            if (selectedText) {
+                window.open(button.url + encodeURIComponent(selectedText), '_blank');
+            }
+        });
+        buttonContainer.appendChild(searchButton);
+    });
+
+    menuContainer.appendChild(buttonContainer);
+    document.body.appendChild(menuContainer);
+
+    // 监听鼠标选择文本事件
+    document.addEventListener('mouseup', function () {
+        selectedText = window.getSelection().toString().trim();
+        if (selectedText) {
+            menuContainer.style.display = 'block';
+        } else {
+            menuContainer.style.display = 'none';
+        }
+    });
+})();
