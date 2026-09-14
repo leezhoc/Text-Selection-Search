@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Text Selection Search
 // @namespace    http://tampermonkey.net/
-// @version      3.4
+// @version      0.2.1
 // @description  Search selected text using various search engines.
 // @author       You
 // @match        *://*/*
